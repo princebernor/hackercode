@@ -1,0 +1,30 @@
+# HackerCode + PostgreSQL. Code execution is configured separately (see README: Judge0/Piston recommended in Docker
+# deployments, because the app container should not be given access to the host's Docker socket).
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: hackercode
+      POSTGRES_USER: hackercode
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?set DATABASE_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hackercode"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    env_file: .env
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/hackercode
+      DATABASE_USER: hackercode
+
+volumes:
+  pgdata:

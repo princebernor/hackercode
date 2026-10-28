@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:hackercode-test-${random.uuid};DB_CLOSE_DELAY=-1
+  mail:
+    host: ""
+
+hackercode:
+  base-url: http://localhost:8080
+  bootstrap-admin-email: ""
+  google:
+    client-id: ""
+    client-secret: ""
+  execution:
+    provider: none
+  review:
+    provider: none
+    anthropic-api-key: ""
+
+logging:
+  level:
+    root: WARN

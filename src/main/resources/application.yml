@@ -1,0 +1,91 @@
+spring:
+  application:
+    name: hackercode
+  datasource:
+    url: ${DATABASE_URL:jdbc:h2:file:./data/hackercode;AUTO_SERVER=FALSE}
+    username: ${DATABASE_USER:sa}
+    password: ${DATABASE_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+  mail:
+    host: ${SMTP_HOST:}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+  servlet:
+    multipart:
+      enabled: false
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+  servlet:
+    session:
+      timeout: 12h
+      cookie:
+        name: HC_SESSION
+        http-only: true
+        same-site: lax
+        secure: ${COOKIE_SECURE:false}
+  tomcat:
+    max-http-form-post-size: 256KB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+hackercode:
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  mail-from: ${MAIL_FROM:HackerCode <no-reply@hackercode.local>}
+  bootstrap-admin-email: ${HC_BOOTSTRAP_ADMIN_EMAIL:}
+  # Signs persistent remember-me cookies. If unset, a random key is generated at startup (remember-me then ends on restart).
+  remember-me-key: ${HC_REMEMBER_ME_KEY:}
+  google:
+    client-id: ${GOOGLE_CLIENT_ID:}
+    client-secret: ${GOOGLE_CLIENT_SECRET:}
+  execution:
+    provider: ${EXECUTION_PROVIDER:none}
+    timeout-seconds: ${EXECUTION_TIMEOUT_SECONDS:5}
+    memory-mb: ${EXECUTION_MEMORY_MB:256}
+    max-output-bytes: 65536
+    judge0-url: ${JUDGE0_URL:}
+    judge0-auth-header: ${JUDGE0_AUTH_HEADER:X-Auth-Token}
+    judge0-auth-token: ${JUDGE0_AUTH_TOKEN:}
+    judge0-rapidapi-host: ${JUDGE0_RAPIDAPI_HOST:}
+    piston-url: ${PISTON_URL:}
+    docker-command: ${DOCKER_COMMAND:docker}
+  review:
+    provider: ${AI_PROVIDER:none}
+    anthropic-api-key: ${ANTHROPIC_API_KEY:}
+    anthropic-model: ${ANTHROPIC_MODEL:claude-opus-5-5}
+    openai-base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+    openai-api-key: ${OPENAI_API_KEY:}
+    openai-model: ${OPENAI_MODEL:}
+    timeout-seconds: ${AI_TIMEOUT_SECONDS:60}
+
+logging:
+  level:
+    root: INFO
